@@ -6,10 +6,22 @@ let buttonSubmit = document.querySelector('button[type="submit"]');
 inputLocation.setAttribute( "autocomplete", "off" ); 
 buttonSubmit.addEventListener('click', onSearch);
 
-//Arrow Function
+
+function onSearch(e) {
+  e.preventDefault();
+  inputLocation.setAttribute( "autocomplete", "off" ); 
+  const location = inputLocation.value; 
+  searchWeather(location);
+  inputLocation.value = '';    
+}
+
+
+//Async-Await
 searchWeather = async (location) => { 
     const apiKey = 'a76b32bf5b491e65fd99110fed59d0ba';
     const url =  `https://api.openweathermap.org/data/2.5/weather?zip=${location},&appid=${apiKey}&units=imperial`;
+  
+    await (await fetch(url)).json()
 
     fetch(url)
         .then (response => response.json())
@@ -19,6 +31,7 @@ searchWeather = async (location) => {
             }
         })      
 }
+
 
 //Arrow Function
 showWeather = (data) => {  
@@ -48,13 +61,3 @@ showWeather = (data) => {
         }
     }    
 }
-
-
-function onSearch(e) {
-    e.preventDefault();
-    inputLocation.setAttribute( "autocomplete", "off" ); 
-    const location = inputLocation.value; 
-    await searchWeather(location);
-    inputLocation.value = '';    
-}
-
